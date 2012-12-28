@@ -3,12 +3,17 @@
 # 1 Requerimientos y Dependencias
 
 # 1.1 Tener el dominio + subdominio definitivo
-# * Tener el dominio + subdominio definitvo que va a apuntar a ésta aplicacion (git.naranya.net?)
+# * Tener el dominio + subdominio definitvo que va a apuntar a ésta aplicacion
 
 # 1.2 Instalar CentOS 5.8
-# * incluir el dominio definitivo (git.naranya.net?) en la instalación 
+# * incluir el dominio definitivo en la instalación 
 
 # 1.3 Fix de “cannot set locale...”
+
+export LANG=en_US.utf-8
+export LC_ALL=en_US.utf-8
+export LC_CTYPE=en_US.UTF-8
+
 echo "export LANG=en_US.utf-8" >> /etc/profile
 echo "export LC_ALL=en_US.utf-8" >> /etc/profile
 echo "export LC_CTYPE=en_US.UTF-8" >> /etc/profile
