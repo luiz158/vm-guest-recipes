@@ -30,13 +30,13 @@ yum install -y curl-devel.x86_64 python26-devel.x86_64 mysql-devel.x86_64 ncurse
 # 1.7 Instalar servicios para instalación standalone*:
 # * Solamente si éste servidor va a hostear MySQL y Redis
 yum install -y redis mysql-server
-chkconfig --add mysqld
-chkconfig mysqld on
-chkconfig --add redis
-chkconfig redis on
-service mysqld restart
-service redis restart
-mysql_secure_installation
+/sbin/chkconfig --add mysqld
+/sbin/chkconfig mysqld on
+/sbin/chkconfig --add redis
+/sbin/chkconfig redis on
+/sbin/service mysqld restart
+/sbin/service redis restart
+# mysql_secure_installation
 
 #############################################################
 # 2. Ambiente Ruby
