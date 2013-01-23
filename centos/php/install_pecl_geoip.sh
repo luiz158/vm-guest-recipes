@@ -16,6 +16,6 @@ $PHP_PREFIX/php/bin/pecl install geoip
 # Habilitar extension en php.ini:
 # Agregar 'extension=geoip.so' solo si no lo encuentra en el php.ini:
 grep -q -e '^extension=geoip.so' $PHP_INI_FILE \
-> || (echo "" >> $PHP_INI_FILE \
-> && echo "[geoip]" >> $PHP_INI_FILE \
-> && echo "extension=geoip.so" >> $PHP_INI_FILE)
+|| (echo "" >> $PHP_INI_FILE \
+&& echo "[geoip]" >> $PHP_INI_FILE \
+&& echo "extension=geoip.so" >> $PHP_INI_FILE)
