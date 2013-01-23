@@ -50,5 +50,3 @@ wget --no-check-certificate https://raw.github.com/vovimayhem/vm-guest-recipes/m
 /sbin/iptables -I RH-Firewall-1-INPUT -p tcp -m state --state NEW -m tcp --dport 6379 -j ACCEPT \
 && /sbin/service iptables save && /sbin/service iptables restart
 
-# Para probar el servicio, utilizaremos el cliente de redis (redis-cli):
-/usr/local/bin/redis-cli
