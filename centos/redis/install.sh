@@ -33,18 +33,22 @@ mkdir -p /var/lib/redis
 # Crear archivo de configuracion a partir del ejemplo:
 sed \
 -e "s/^daemonize no$/daemonize yes/" \
--e "s/^# bind 127.0.0.1$/bind 127.0.0.1/" \
 -e "s/^dir \.\//dir \/var\/lib\/redis\//" \
 -e "s/^loglevel debug$/loglevel notice/" \
 -e "s/^logfile stdout$/logfile \/var\/log\/redis.log/" \
 redis.conf > /etc/redis.conf
 
 # Copiar y editar script de arranque de servicio
-wget --no-check-certificate https://raw.github.com/vovimayhem/vm-guest-recipes/master/centos/redis/init_script.sh -O /etc/init.d/redis-server \
+wget --no-check-certificate https://raw.github.com/vovimayhem/vm-guest-recipes/master/centos/redis/init_script.sh \
+-O /etc/init.d/redis-server \
 && chmod u+x /etc/init.d/redis-server
 
 # Activar redis como servicio:
 chkconfig --add redis-server && chkconfig --level 345 redis-server on && service redis-server start
+
+# Abrir puertos del firewall:
+iptables -I RH-Firewall-1-INPUT -p tcp -m state --state NEW -m tcp --dport 6379 -j ACCEPT \
+&& service iptables save && service iptables restart
 
 # Para probar el servicio, utilizaremos el cliente de redis (redis-cli):
 redis-cli
