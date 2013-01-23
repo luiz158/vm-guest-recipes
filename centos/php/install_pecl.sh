@@ -19,6 +19,24 @@ OPTIONS:
 EOF
 }
 
+function elementExists()
+{
+
+	if [ -z "$1" ]; then
+		return
+	fi
+
+	for i in ${excluded[@]}
+	do
+	if [ $i == $1 ]
+	then
+	return 1
+	fi
+	done
+
+	return 0
+}
+
 ensure_dependencies()
 {
 	# EPEL Repo:
@@ -33,13 +51,38 @@ ensure_dependencies()
 
 install_extension()
 {
+	echo "$PHP_BIN_LOCATION/bin/pecl install $EXTENSION_NAME"
+}
+
+install_unknownextension()
+{
+	echo "Installing *UNKNOWN php pecl extension '$EXTENSION_NAME' in '$PHP_BIN_LOCATION'"
 	ensure_dependencies
-	$PHP_BIN_LOCATION/bin/pecl install $EXTENSION_NAME
+	install_extension
+}
+
+install_apc()
+{
+	ensure_dependencies
+	install_extension
+}
+
+install_geoip()
+{
+	echo "Installing *KNOWN* php pecl extension '$EXTENSION_NAME' in '$PHP_BIN_LOCATION'"
+	\curl -L https://raw.github.com/vovimayhem/vm-guest-recipes/master/centos/geoip/install.sh | sudo bash
+	install_extension
+}
+
+install_memcached()
+{
+	return 1;
 }
 
 PHP_BIN_LOCATION=
 EXTENSION_NAME=
-while getopts “hl:e” OPTION
+VERBOSE=
+while getopts “hl:e:v” OPTION
 do
      case $OPTION in
          h)
@@ -52,6 +95,9 @@ do
          e)
              EXTENSION_NAME=$OPTARG
              ;;
+         v)
+             VERBOSE="--verbose"
+             ;;
          ?)
              usage
              exit
@@ -59,17 +105,31 @@ do
      esac
 done
 
-if [ -z $PHP_BIN_LOCATION ]; then
-     usage
-     exit 1
-elif [ -z $EXTENSION_NAME]; then
+echo "PHP_BIN_LOCATION: '$PHP_BIN_LOCATION'"
+echo "EXTENSION_NAME: '$EXTENSION_NAME'"
+if [ -z $PHP_BIN_LOCATION ] || [ -z $EXTENSION_NAME ]; then
 	usage
 	exit 1
 else
-	echo "Installing PHP PECL Extension '$EXTENSION_NAME' in 'PHP_BIN_LOCATION'"
-fi
+	
+	KNOWN_EXTENSIONS="geoip apc memcached"
+	
+	case $KNOWN_EXTENSIONS in
+	  # match exact string
+	  #"$searchString") echo yep, it matches exactly;;
 
-install_extension
+	  # match start of string
+	  #"$searchString"*) echo yep, it matches at the start ;;
+
+	  # match end of string
+	  #*"$searchString") echo yep, it matches at the end ;;
+
+	  # EXTENSION_NAME can be anywhere in KNOWN_EXTENSIONS
+	  *"$EXTENSION_NAME"*) install_$EXTENSION_NAME ;;
+
+	  *) install_extension ;;
+	esac
+fi
 
 exit
 
