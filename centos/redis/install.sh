@@ -11,13 +11,13 @@ yum install -y curl-devel.x86_64 gcc.x86_64 wget.x86_64 sed.x86_64 jemalloc-deve
 mkdir -p ~/software \
 && cd ~/software \
 && wget http://redis.googlecode.com/files/redis-2.6.9.tar.gz \
-&& tar -xvf redis-2.6.9.tar.gz \
+&& tar -xf redis-2.6.9.tar.gz \
 && cd redis-2.6.9 \
 && make
 
 # Instalar tcl, que es dependencia para las pruebas de Redis:
 #cd ~/software && wget http://downloads.sourceforge.net/tcl/tcl8.6.0-src.tar.gz \
-#&& tar -xvf tcl8.6.0-src.tar.gz && cd tcl8.6.0/unix \
+#&& tar -xf tcl8.6.0-src.tar.gz && cd tcl8.6.0/unix \
 #&& ./configure && make && sudo make install && make clean \
 #&& sudo ln -s /usr/local/bin/tclsh8.6 /usr/local/bin/tclsh8.5
 
@@ -44,11 +44,11 @@ wget --no-check-certificate https://raw.github.com/vovimayhem/vm-guest-recipes/m
 && chmod u+x /etc/init.d/redis-server
 
 # Activar redis como servicio:
-chkconfig --add redis-server && chkconfig --level 345 redis-server on && service redis-server start
+/sbin/chkconfig --add redis-server && /sbin/chkconfig --level 345 redis-server on && /sbin/service redis-server start
 
 # Abrir puertos del firewall:
-iptables -I RH-Firewall-1-INPUT -p tcp -m state --state NEW -m tcp --dport 6379 -j ACCEPT \
-&& service iptables save && service iptables restart
+/sbin/iptables -I RH-Firewall-1-INPUT -p tcp -m state --state NEW -m tcp --dport 6379 -j ACCEPT \
+&& /sbin/service iptables save && /sbin/service iptables restart
 
 # Para probar el servicio, utilizaremos el cliente de redis (redis-cli):
-redis-cli
+/usr/local/bin/redis-cli
