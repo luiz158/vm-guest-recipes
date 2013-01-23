@@ -40,8 +40,7 @@ sed \
 redis.conf > /etc/redis.conf
 
 # Copiar y editar script de arranque de servicio
-wget https://raw.github.com/vovimayhem/vm-guest-recipes/master/centos/redis/init_script.sh -O /etc/init.d/redis-server \
-&& sed -i "s/usr\/local\/sbin\/redis/usr\/local\/bin\/redis/" /etc/init.d/redis-server \
+wget --no-check-certificate https://raw.github.com/vovimayhem/vm-guest-recipes/master/centos/redis/init_script.sh -O /etc/init.d/redis-server \
 && chmod u+x /etc/init.d/redis-server
 
 # Activar redis como servicio:

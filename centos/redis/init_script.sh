@@ -23,7 +23,7 @@ start() {
     [ -f $REDIS_CONFIG ] || exit 6
     [ -x $exec ] || exit 5
     echo -n $"Starting $name: "
-    daemon --user ${REDIS_USER-redis} "$exec $REDIS_CONFIG"
+    daemon "$exec $REDIS_CONFIG"
     retval=$?
     echo
     [ $retval -eq 0 ] && touch $lockfile
